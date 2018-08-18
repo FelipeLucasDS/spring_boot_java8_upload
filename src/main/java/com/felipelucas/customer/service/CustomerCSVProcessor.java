@@ -1,15 +1,11 @@
-package com.felipelucas.store.service;
+package com.felipelucas.customer.service;
 
 import com.felipelucas.commons.Exceptions.CSVEmptyException;
 import com.felipelucas.commons.Exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.commons.csv.CSVProcessor;
 import com.felipelucas.commons.csv.CSVProcessorInterface;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-public class StoreCSVProcessor implements CSVProcessorInterface {
+public class CustomerCSVProcessor implements CSVProcessorInterface {
 
-    private final static Logger logger = LoggerFactory.getLogger(StoreCSVProcessor.class);
+    private final static Logger logger = LoggerFactory.getLogger(CustomerCSVProcessor.class);
 
     private final static String csvType = "text/csv";
 
@@ -35,7 +31,7 @@ public class StoreCSVProcessor implements CSVProcessorInterface {
     @Override
     public CSVDTO getCSVData(MultipartFile file) throws CSVException, CSVEmptyException {
         CSVDTO csvdto = csvProcessor.getCSVData(file);
-        csvProcessor.validateColumnQtd(csvdto, 6);
+        csvProcessor.validateColumnQtd(csvdto, 5);
         return csvdto;
     }
 }

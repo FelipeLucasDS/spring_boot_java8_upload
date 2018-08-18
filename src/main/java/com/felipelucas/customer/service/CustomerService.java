@@ -1,12 +1,11 @@
-package com.felipelucas.store.service;
+package com.felipelucas.customer.service;
 
 import com.felipelucas.commons.Exceptions.CSVEmptyException;
 import com.felipelucas.commons.Exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
-import com.felipelucas.commons.csv.CSVProcessor;
-import com.felipelucas.store.api.parser.StoreParser;
-import com.felipelucas.store.domain.Store;
-import com.felipelucas.store.repository.StoreRepository;
+import com.felipelucas.customer.api.parser.CustomerParser;
+import com.felipelucas.customer.domain.Customer;
+import com.felipelucas.customer.repository.CustomerRepository;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,23 +15,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class StoreService {
+public class CustomerService {
 
-    private final static Logger logger = LoggerFactory.getLogger(StoreService.class);
-
-    @Autowired
-    private StoreParser parser;
+    private final static Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
     @Autowired
-    private StoreCSVProcessor storeCSVProcessor;
+    private CustomerParser parser;
 
     @Autowired
-    private StoreRepository repository;
+    private CustomerCSVProcessor storeCSVProcessor;
+
+    @Autowired
+    private CustomerRepository repository;
 
     @Transactional
     public void createSingleStore() {
 
-        Store store = new Store();
+        Customer store = new Customer();
         store = repository.save(store);
 
         logger.info("Creating a new customer");
@@ -42,11 +41,11 @@ public class StoreService {
     }
 
     @Transactional
-    public void readSingleStore(MultipartFile multipart) throws CSVEmptyException, CSVException {
+    public void createFromFile(MultipartFile multipart) throws CSVEmptyException, CSVException {
         storeCSVProcessor.validate(multipart);
 
         CSVDTO csvData = storeCSVProcessor.getCSVData(multipart);
-        List<Store> stores = parser.toEntity(csvData);
+        List<Customer> stores = parser.toEntity(csvData);
 
         repository.save(stores);
     }

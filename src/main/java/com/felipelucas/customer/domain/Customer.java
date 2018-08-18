@@ -1,4 +1,4 @@
-package com.felipelucas.store.domain;
+package com.felipelucas.customer.domain;
 
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -11,7 +11,7 @@ import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "Customer", schema = "PERFORMANCE")
-public class Store {
+public class    Customer {
 
     @Id
     @GenericGenerator(strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
@@ -33,10 +33,8 @@ public class Store {
     private String latitude;
     @Column(nullable = false)
     private String longitude;
-    @Column(nullable = false)
-    private BigDecimal revenue;
 
-    public Store(){}
+    public Customer(){}
 
     public Long getId() {
         return id;
@@ -84,14 +82,6 @@ public class Store {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
-    }
-
-    public BigDecimal getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(BigDecimal revenue) {
-        this.revenue = revenue;
     }
 
 }

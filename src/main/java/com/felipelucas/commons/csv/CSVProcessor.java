@@ -5,7 +5,9 @@ import com.felipelucas.commons.Exceptions.CSVException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,16 @@ public class CSVProcessor implements CSVProcessorInterface {
 
         if(!csvType.equals(file.getContentType()))
             throw new CSVException();
+    }
 
+    public void validateColumnQtd(CSVDTO csvdto, int qtdColumns) throws CSVException, CSVEmptyException {
+        Optional<LinkedList<String>> linkedList = csvdto.getCsvData().stream()
+                .filter(strings -> strings.size() != 5)
+                .findAny();
 
+        if(linkedList.isPresent()){
+            throw new CSVException();
+        }
     }
 
     @Override

@@ -1,6 +1,6 @@
-package com.felipelucas.store.api.v1;
+package com.felipelucas.customer.api.v1;
 
-import com.felipelucas.store.service.StoreService;
+import com.felipelucas.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +14,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class StoreAPI {
+public class CustomerAPI {
 
     @Autowired
-    private StoreService storeService;
+    private CustomerService customerService;
 
     @GetMapping(value="/customer/{id}")
     public ResponseEntity createSingleStore(@PathVariable(value = "id") Long id) {
-        storeService.createSingleStore();
+        customerService.createSingleStore();
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value="/customer/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file,
                                       @PathVariable(value = "id") Long id) {
-        storeService.readSingleStore(file);
+        customerService.createFromFile(file);
         return ResponseEntity.ok().build();
     }
 }
