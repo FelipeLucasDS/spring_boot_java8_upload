@@ -25,9 +25,8 @@ public class CustomerAPI {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value="/customer/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file,
-                                      @PathVariable(value = "id") Long id) {
+    @PostMapping(value="/customer/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file) {
         customerService.createFromFile(file);
         return ResponseEntity.ok().build();
     }

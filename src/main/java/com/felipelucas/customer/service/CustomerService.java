@@ -31,8 +31,8 @@ public class CustomerService {
     @Transactional
     public void createSingleStore() {
 
-        Customer store = new Customer();
-        store = repository.save(store);
+        Customer customer = new Customer();
+        customer = repository.save(customer);
 
         logger.info("Creating a new customer");
 
