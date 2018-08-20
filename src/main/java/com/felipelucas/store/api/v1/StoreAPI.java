@@ -1,8 +1,8 @@
 package com.felipelucas.store.api.v1;
 
+import com.felipelucas.commons.api.BaseRestController;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.service.StoreService;
-import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class StoreAPI {
+public class StoreAPI extends BaseRestController{
 
     @Autowired
     private StoreService storeService;
@@ -50,7 +48,7 @@ public class StoreAPI {
 
     @PostMapping(value="/store/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file) {
-        storeService.readSingleStore(file);
+        storeService.createFromFile(file);
         return ResponseEntity.ok().build();
     }
 }

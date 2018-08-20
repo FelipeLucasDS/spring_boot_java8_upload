@@ -2,9 +2,11 @@ package com.felipelucas.commons.csv;
 
 import com.felipelucas.commons.Exceptions.CSVEmptyException;
 import com.felipelucas.commons.Exceptions.CSVException;
+import com.felipelucas.commons.Exceptions.NotCSVException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
@@ -27,12 +30,15 @@ public class CSVProcessor implements CSVProcessorInterface {
             throw new CSVEmptyException();
 
         if(!csvType.equals(file.getContentType()))
-            throw new CSVException();
+            throw new NotCSVException();
     }
 
     public void validateColumnQtd(CSVDTO csvdto, int qtdColumns) throws CSVException, CSVEmptyException {
+        if(CollectionUtils.isEmpty(csvdto.getCsvData()))
+            throw new CSVEmptyException();
+
         Optional<LinkedList<String>> linkedList = csvdto.getCsvData().stream()
-                .filter(strings -> strings.size() != 5)
+                .filter(strings -> strings.size() != qtdColumns)
                 .findAny();
 
         if(linkedList.isPresent()){

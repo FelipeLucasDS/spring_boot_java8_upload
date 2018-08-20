@@ -38,7 +38,12 @@ public class StoreService {
     public List<StoreDTO> getAll() {
         logger.info("Searching all stores");
 
-        List<Store> all = repository.findAll();
+        List<Store> all = null;
+        try {
+            all = repository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return all.stream()
                 .map(parser::fromEntity)
                 .collect(Collectors.toList());
@@ -80,7 +85,7 @@ public class StoreService {
     }
 
     @Transactional
-    public void readSingleStore(MultipartFile multipart) throws CSVEmptyException, CSVException {
+    public void createFromFile(MultipartFile multipart) throws CSVEmptyException, CSVException {
         storeCSVProcessor.validate(multipart);
 
         CSVDTO csvData = storeCSVProcessor.getCSVData(multipart);

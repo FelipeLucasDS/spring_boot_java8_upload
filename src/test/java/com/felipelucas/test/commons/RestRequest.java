@@ -1,16 +1,16 @@
-package com.johndeere.test.commons;
+package com.felipelucas.test.commons;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 
 public class RestRequest<E> {
 
@@ -85,12 +85,15 @@ public class RestRequest<E> {
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity =
                 new HttpEntity<>(multipart, headers);
-
-        return RestTemplateBuilder.build().exchange(
-                baseUrl + endpoint,
-                HttpMethod.POST,
-                requestEntity,
-                responseType);
+        try {
+            return RestTemplateBuilder.build().exchange(
+                    baseUrl + endpoint,
+                    HttpMethod.POST,
+                    requestEntity,
+                    responseType);
+        }catch(HttpClientErrorException ex){
+            return new ResponseEntity<C>(HttpStatus.valueOf(Integer.parseInt(ex.getMessage().trim())));
+        }
     }
 
 }

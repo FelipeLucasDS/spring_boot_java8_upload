@@ -1,4 +1,4 @@
-package com.johndeere.test.commons;
+package com.felipelucas.test.commons;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;

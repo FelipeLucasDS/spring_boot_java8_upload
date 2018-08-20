@@ -2,6 +2,7 @@ package com.felipelucas.infra;
 
 import com.felipelucas.commons.Exceptions.CSVEmptyException;
 import com.felipelucas.commons.Exceptions.CSVException;
+import com.felipelucas.commons.Exceptions.NotCSVException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NO_CONTENT);
     }
 
+    @ExceptionHandler({NotCSVException.class})
+    public ResponseEntity<String> handleNotCSVException(NotCSVException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
     @ExceptionHandler({CSVException.class})
     public ResponseEntity<String> handleCSVException(CSVException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
     }
 
     @ExceptionHandler({Exception.class})

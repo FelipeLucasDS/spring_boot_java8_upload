@@ -1,5 +1,6 @@
 package com.felipelucas.customer.api.v1;
 
+import com.felipelucas.commons.api.BaseRestController;
 import com.felipelucas.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RestController
-@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class CustomerAPI {
+public class CustomerAPI extends BaseRestController {
 
     @Autowired
     private CustomerService customerService;

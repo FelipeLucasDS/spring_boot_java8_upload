@@ -1,4 +1,4 @@
-package com.johndeere.test.commons;
+package com.felipelucas.test.commons;
 
 import com.felipelucas.Application;
 import org.junit.runner.RunWith;
