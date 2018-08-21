@@ -9,6 +9,7 @@ import com.felipelucas.store.repository.StoreRepository;
 import com.felipelucas.store.service.parser.StoreParser;
 import com.felipelucas.store.service.validator.StoreValidator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +101,9 @@ public class StoreService {
 
         //TODO do a search for nearby store
         Store store = repository.findOne(1l);
+        if(Objects.isNull(store)){
+            return null;
+        }
         return parser.fromEntity(store);
     }
 }

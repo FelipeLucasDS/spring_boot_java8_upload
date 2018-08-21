@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 public class StoreAPI extends BaseRestController{
 
@@ -24,31 +26,30 @@ public class StoreAPI extends BaseRestController{
 
     @GetMapping(value="/store/{id}")
     public ResponseEntity<StoreDTO> getStoreById(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(storeService.getById(id));
+        return ok(storeService.getById(id));
     }
 
     @GetMapping(value="/store")
     public ResponseEntity<List<StoreDTO>> getStores() {
-        return ResponseEntity.ok(storeService.getAll());
+        return ok(storeService.getAll());
     }
 
     @PutMapping(value="/store/{id}")
     public ResponseEntity updateStore(@PathVariable(value = "id") Long id,
                                       @RequestBody StoreDTO storeDTO) {
-        return ResponseEntity.ok(storeService.updateStore(id, storeDTO));
+        return ok(storeService.updateStore(id, storeDTO));
 
     }
 
     @PostMapping(value="/store")
-    public ResponseEntity<Long> createSingleStore(@PathVariable(value = "id") Long id,
-                                                        @RequestBody StoreDTO storeDTO) {
+    public ResponseEntity<Long> createSingleStore(@RequestBody StoreDTO storeDTO) {
         Long idSaved = storeService.createSingleStore(storeDTO);
-        return ResponseEntity.ok(idSaved);
+        return ok(idSaved);
     }
 
     @PostMapping(value="/store/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file) {
         storeService.createFromFile(file);
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 }

@@ -43,7 +43,7 @@ public class CustomerService {
     public Long createSingleCustomer(CustomerDTO customerDTO) {
         logger.info("Creating a new customer");
 
-        Customer customer = new Customer();
+        Customer customer = parser.toEntity(customerDTO);
 
         customer = repository.save(customer);
 
@@ -58,11 +58,11 @@ public class CustomerService {
         storeCSVProcessor.validate(multipart);
 
         CSVDTO csvData = storeCSVProcessor.getCSVData(multipart);
-        List<Customer> stores = parser.toEntity(csvData);
+        List<Customer> customers = parser.toEntity(csvData);
 
-        stores.parallelStream().forEach(this::fillCustomerWithNearbyStore);
+        customers.parallelStream().forEach(this::fillCustomerWithNearbyStore);
 
-        repository.save(stores);
+        repository.save(customers);
     }
 
     private void fillCustomerWithNearbyStore(Customer customer) {

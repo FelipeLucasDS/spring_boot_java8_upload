@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 
 @RestController
 public class CustomerAPI extends BaseRestController {
@@ -24,27 +26,26 @@ public class CustomerAPI extends BaseRestController {
 
     @GetMapping(value="/customer/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(customerService.getById(id));
+        return ok(customerService.getById(id));
     }
 
     @PutMapping(value="/customer/{id}")
     public ResponseEntity updateCustomer(@PathVariable(value = "id") Long id,
                                       @RequestBody CustomerDTO customerDTO) {
-        return ResponseEntity.ok(customerService.updateCustomer(id, customerDTO));
+        return ok(customerService.updateCustomer(id, customerDTO));
 
     }
 
     @PostMapping(value="/customer")
-    public ResponseEntity<Long> createSingleCustomer(@PathVariable(value = "id") Long id,
-                                                  @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<Long> createSingleCustomer(@RequestBody CustomerDTO customerDTO) {
         Long idSaved = customerService.createSingleCustomer(customerDTO);
-        return ResponseEntity.ok(idSaved);
+        return ok(idSaved);
     }
 
 
     @PostMapping(value="/customer/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file) {
         customerService.createFromFile(file);
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 }

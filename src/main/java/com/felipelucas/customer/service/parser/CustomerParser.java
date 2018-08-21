@@ -36,6 +36,16 @@ public class CustomerParser {
         return customers;
     }
 
+    public Customer toEntity(CustomerDTO customerDTO) {
+        return new CustomerBuilder()
+                .setID(customerDTO.id)
+                .setName(customerDTO.name)
+                .setCity(customerDTO.city)
+                .setState(customerDTO.state)
+                .setLatitude(customerDTO.latitude)
+                .setLongitude(customerDTO.longitude)
+                .getitem();
+    }
 
     public Customer toEntity(Customer customer, CustomerDTO customerDTO) {
         if(StringUtils.isNotEmpty(customerDTO.city))
