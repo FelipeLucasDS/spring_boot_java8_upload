@@ -23,19 +23,19 @@ public class CustomerAPI extends BaseRestController {
     private CustomerService customerService;
 
     @GetMapping(value="/customer/{id}")
-    public ResponseEntity<CustomerDTO> getStoreById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(customerService.getById(id));
     }
 
     @PutMapping(value="/customer/{id}")
-    public ResponseEntity updateStore(@PathVariable(value = "id") Long id,
+    public ResponseEntity updateCustomer(@PathVariable(value = "id") Long id,
                                       @RequestBody CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerService.updateCustomer(id, customerDTO));
 
     }
 
     @PostMapping(value="/customer")
-    public ResponseEntity<Long> createSingleStore(@PathVariable(value = "id") Long id,
+    public ResponseEntity<Long> createSingleCustomer(@PathVariable(value = "id") Long id,
                                                   @RequestBody CustomerDTO customerDTO) {
         Long idSaved = customerService.createSingleCustomer(customerDTO);
         return ResponseEntity.ok(idSaved);
