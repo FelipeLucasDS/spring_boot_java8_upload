@@ -14,13 +14,13 @@ import org.hibernate.annotations.Parameter;
 
 public class CustomerDTO {
 
-    private Long id;
-    private String name;
-    private String city;
-    private String state;
-    private String latitude;
-    private String longitude;
-    private StoreDTO store;
+    public Long id;
+    public String name;
+    public String city;
+    public String state;
+    public String latitude;
+    public String longitude;
+    public StoreDTO store;
 
     public CustomerDTO() {}
 }

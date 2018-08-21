@@ -3,9 +3,10 @@ package com.felipelucas.customer.service;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
-import com.felipelucas.customer.api.parser.CustomerParser;
+import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.customer.domain.Customer;
 import com.felipelucas.customer.repository.CustomerRepository;
+import com.felipelucas.customer.service.parser.CustomerParser;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.service.StoreService;
 import com.felipelucas.store.service.parser.StoreParser;
@@ -39,15 +40,16 @@ public class CustomerService {
     private StoreParser storeParser;
 
     @Transactional
-    public void createSingleStore() {
-
+    public Long createSingleCustomer(CustomerDTO customerDTO) {
         logger.info("Creating a new customer");
 
         Customer customer = new Customer();
+
         customer = repository.save(customer);
 
 
-        logger.info("Customer {} created");
+        logger.info("Customer {} created", customer.getId());
+        return customer.getId();
 
     }
 
@@ -58,14 +60,33 @@ public class CustomerService {
         CSVDTO csvData = storeCSVProcessor.getCSVData(multipart);
         List<Customer> stores = parser.toEntity(csvData);
 
-        stores.parallelStream().forEach(this::fillCustomerWithnearbyStore);
+        stores.parallelStream().forEach(this::fillCustomerWithNearbyStore);
 
         repository.save(stores);
     }
 
-    private void fillCustomerWithnearbyStore(Customer store) {
-        StoreDTO nearbyStore = this.storeService.getNearbyStore(store.getLatitude(), store.getLongitude());
+    private void fillCustomerWithNearbyStore(Customer customer) {
+        StoreDTO nearbyStore = this.storeService.getNearbyStore(customer.getLatitude(), customer.getLongitude());
         if(Objects.nonNull(nearbyStore))
-            store.setStore(storeParser.toEntity(nearbyStore));
+            customer.setStore(storeParser.toEntity(nearbyStore));
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerDTO getById(Long id) {
+        Customer customer = repository.getOne(id);
+        return this.parser.toDTO(customer);
+    }
+
+    @Transactional
+    public Long updateCustomer(Long id, CustomerDTO customerDTO) {
+        logger.info("Updating customer {}", id);
+
+        Customer repoCustomer = repository.getOne(id);
+        Customer customer =  parser.toEntity(repoCustomer, customerDTO);
+
+        fillCustomerWithNearbyStore(customer);
+
+        logger.info("Store {} updated", customer.getId());
+        return customer.getId();
     }
 }
