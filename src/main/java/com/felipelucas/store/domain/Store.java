@@ -10,7 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 @Entity
-@Table(name = "Customer", schema = "PERFORMANCE")
+@Table(name = "Store", schema = "PERFORMANCE")
 public class Store {
 
     @Id

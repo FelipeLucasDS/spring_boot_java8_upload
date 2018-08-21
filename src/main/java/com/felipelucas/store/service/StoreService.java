@@ -1,12 +1,12 @@
 package com.felipelucas.store.service;
 
-import com.felipelucas.commons.Exceptions.CSVEmptyException;
-import com.felipelucas.commons.Exceptions.CSVException;
+import com.felipelucas.commons.exceptions.CSVEmptyException;
+import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
-import com.felipelucas.store.service.parser.StoreParser;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.domain.Store;
 import com.felipelucas.store.repository.StoreRepository;
+import com.felipelucas.store.service.parser.StoreParser;
 import com.felipelucas.store.service.validator.StoreValidator;
 import java.util.List;
 import java.util.stream.Collectors;

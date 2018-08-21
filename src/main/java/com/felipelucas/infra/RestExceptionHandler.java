@@ -1,8 +1,8 @@
 package com.felipelucas.infra;
 
-import com.felipelucas.commons.Exceptions.CSVEmptyException;
-import com.felipelucas.commons.Exceptions.CSVException;
-import com.felipelucas.commons.Exceptions.NotCSVException;
+import com.felipelucas.commons.exceptions.CSVEmptyException;
+import com.felipelucas.commons.exceptions.CSVException;
+import com.felipelucas.commons.exceptions.NotCSVException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler({CSVEmptyException.class})
-    public ResponseEntity<String> handleCSVEmptyException(Exception ex) {
+    public ResponseEntity<String> handleCSVEmptyException(CSVEmptyException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NO_CONTENT);
     }
 

@@ -2,7 +2,6 @@ package com.felipelucas.customer.api.parser;
 
 import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.customer.domain.Customer;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;

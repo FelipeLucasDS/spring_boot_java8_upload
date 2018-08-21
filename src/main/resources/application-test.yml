@@ -7,7 +7,7 @@ hikari:
   datasource:
     poolName: ContractConnectionPool
     driverClassName: org.h2.Driver
-    jdbcUrl: jdbc:h2:mem:~/test;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS PERFORMANCE
+    jdbcUrl: jdbc:h2:mem:~/test;DB_CLOSE_ON_EXIT=TRUE;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS PERFORMANCE
     username: sa
     password:
     maximumPoolSize: 3
@@ -24,7 +24,7 @@ spring:
       hibernate:
         format_sql: true
         hbm2ddl:
-          auto: update
+          auto: create
     properties:
       hibernate.temp.use_jdbc_metadata_defaults: false
       hibernate.bytecode.use_reflection_optimizer: false

@@ -1,4 +1,4 @@
-package com.felipelucas.commons.Exceptions;
+package com.felipelucas.commons.exceptions;
 
 public class CSVEmptyException extends RuntimeException {
 

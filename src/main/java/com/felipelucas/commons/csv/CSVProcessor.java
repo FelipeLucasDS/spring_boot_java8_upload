@@ -1,12 +1,11 @@
 package com.felipelucas.commons.csv;
 
-import com.felipelucas.commons.Exceptions.CSVEmptyException;
-import com.felipelucas.commons.Exceptions.CSVException;
-import com.felipelucas.commons.Exceptions.NotCSVException;
+import com.felipelucas.commons.exceptions.CSVEmptyException;
+import com.felipelucas.commons.exceptions.CSVException;
+import com.felipelucas.commons.exceptions.NotCSVException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;

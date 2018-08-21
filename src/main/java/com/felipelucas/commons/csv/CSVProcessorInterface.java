@@ -1,7 +1,7 @@
 package com.felipelucas.commons.csv;
 
-import com.felipelucas.commons.Exceptions.CSVEmptyException;
-import com.felipelucas.commons.Exceptions.CSVException;
+import com.felipelucas.commons.exceptions.CSVEmptyException;
+import com.felipelucas.commons.exceptions.CSVException;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CSVProcessorInterface {

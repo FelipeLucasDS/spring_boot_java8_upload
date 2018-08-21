@@ -1,12 +1,10 @@
 package com.felipelucas.customer.service;
 
-import com.felipelucas.commons.Exceptions.CSVEmptyException;
-import com.felipelucas.commons.Exceptions.CSVException;
+import com.felipelucas.commons.exceptions.CSVEmptyException;
+import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.commons.csv.CSVProcessor;
 import com.felipelucas.commons.csv.CSVProcessorInterface;
-import java.util.LinkedList;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

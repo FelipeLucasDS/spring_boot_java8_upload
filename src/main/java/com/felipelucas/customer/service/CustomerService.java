@@ -1,7 +1,7 @@
 package com.felipelucas.customer.service;
 
-import com.felipelucas.commons.Exceptions.CSVEmptyException;
-import com.felipelucas.commons.Exceptions.CSVException;
+import com.felipelucas.commons.exceptions.CSVEmptyException;
+import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.customer.api.parser.CustomerParser;
 import com.felipelucas.customer.domain.Customer;
