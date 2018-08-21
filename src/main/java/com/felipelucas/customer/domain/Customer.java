@@ -1,9 +1,12 @@
 package com.felipelucas.customer.domain;
 
+import com.felipelucas.store.domain.Store;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -32,6 +35,11 @@ public class    Customer {
     private String latitude;
     @Column(nullable = false)
     private String longitude;
+
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     public Customer(){}
 
@@ -83,4 +91,11 @@ public class    Customer {
         this.longitude = longitude;
     }
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
 }

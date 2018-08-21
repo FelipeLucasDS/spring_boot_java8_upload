@@ -19,7 +19,7 @@ public class CustomerAPI extends BaseRestController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping(value="/customer/{id}")
+    @GetMapping(value="/customer")
     public ResponseEntity createSingleStore(@PathVariable(value = "id") Long id) {
         customerService.createSingleStore();
         return ResponseEntity.ok().build();

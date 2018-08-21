@@ -54,6 +54,7 @@ public class StoreParser {
 
     public Store toEntity(StoreDTO storeDTO) {
         return new StoreBuilder()
+                .setId(storeDTO.id)
                 .setName(storeDTO.name)
                 .setCity(storeDTO.city)
                 .setState(storeDTO.state)
@@ -89,6 +90,11 @@ public class StoreParser {
 
         StoreBuilder(){
             this.store = new Store();
+        }
+
+        StoreBuilder setId(Long id) {
+            store.setId(id);
+            return this;
         }
 
         StoreBuilder setName(String name) {
@@ -137,6 +143,11 @@ public class StoreParser {
 
         StoreDTOBuilder(){
             this.store = new StoreDTO();
+        }
+
+        StoreDTOBuilder setId(Long id) {
+            store.id = id;
+            return this;
         }
 
         StoreDTOBuilder setName(String name) {

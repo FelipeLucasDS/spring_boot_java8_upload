@@ -93,4 +93,13 @@ public class StoreService {
 
         repository.save(stores);
     }
+
+    @Transactional(readOnly = true)
+    public StoreDTO getNearbyStore(String lat, String lon) {
+        logger.info("Searching store by lat {} and long {}", lat, lon);
+
+        //TODO do a search for nearby store
+        Store store = repository.findOne(1l);
+        return parser.fromEntity(store);
+    }
 }
