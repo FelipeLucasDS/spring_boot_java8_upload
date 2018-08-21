@@ -1,5 +1,6 @@
 package com.felipelucas.customer.service;
 
+import com.felipelucas.commons.dto.ValueDTO;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
@@ -10,6 +11,7 @@ import com.felipelucas.customer.service.parser.CustomerParser;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.service.StoreService;
 import com.felipelucas.store.service.parser.StoreParser;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import org.slf4j.Logger;
@@ -75,6 +77,14 @@ public class CustomerService {
     public CustomerDTO getById(Long id) {
         Customer customer = repository.getOne(id);
         return this.parser.toDTO(customer);
+    }
+
+
+    @Transactional(readOnly = true)
+    public ValueDTO getTotalRevenue() {
+        ValueDTO valueDTO = new ValueDTO<BigDecimal>();
+        valueDTO.value = repository.countCustomers();
+        return valueDTO;
     }
 
     @Transactional

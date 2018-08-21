@@ -1,9 +1,12 @@
 package com.felipelucas.customer.api.v1;
 
 import com.felipelucas.commons.api.BaseRestController;
+import com.felipelucas.commons.dto.ValueDTO;
 import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.customer.service.CustomerService;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,4 +51,10 @@ public class CustomerAPI extends BaseRestController {
         customerService.createFromFile(file);
         return ok().build();
     }
+
+    @GetMapping(value="/customer/totalRevenue")
+    public ValueDTO getTotalRevenue() {
+        return customerService.getTotalRevenue();
+    }
+
 }

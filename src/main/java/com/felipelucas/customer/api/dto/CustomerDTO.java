@@ -1,5 +1,6 @@
 package com.felipelucas.customer.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.domain.Store;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerDTO {
 
     public Long id;

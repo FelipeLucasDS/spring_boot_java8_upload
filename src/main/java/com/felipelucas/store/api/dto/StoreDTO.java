@@ -14,6 +14,7 @@ public class StoreDTO {
     public String latitude;
     public String longitude;
     public BigDecimal revenue;
+    public BigDecimal mediumConsumption;
 
     public StoreDTO() {
     }
