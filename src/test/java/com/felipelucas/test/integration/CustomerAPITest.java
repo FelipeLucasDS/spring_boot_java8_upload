@@ -5,29 +5,41 @@ import com.felipelucas.test.commons.IntegrationTestBase;
 import com.felipelucas.test.commons.RestRequest;
 import com.felipelucas.test.mock.CustomerMockFactory;
 import java.util.List;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
-import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 
 public class CustomerAPITest extends IntegrationTestBase {
 
     @Value(value = "classpath:csv/customers.csv")
     private Resource customersCSV;
 
-    public void getImportCustomerOK() throws Exception {
+    @Value(value = "classpath:csv/stores_far_near.csv")
+    private Resource storeFarAndNear;
 
+
+    @Before
+    public void getImportCustomerAndStore() throws Exception {
         ResponseEntity response =
+                RestRequest.build()
+                        .baseUrl(getBaseUrl())
+                        .method(POST)
+                        .endpoint("/store/import")
+                        .execute(new ParameterizedTypeReference<List>() {}, storeFarAndNear.getFile());
+        assertEquals(OK, response.getStatusCode());
+        response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(POST)
@@ -38,18 +50,19 @@ public class CustomerAPITest extends IntegrationTestBase {
     }
 
     @Test
-    public void getCustomer() throws Exception {
-        getImportCustomerOK();
-        ResponseEntity<CustomerDTO> response =
+    public void getCustomerAllValidateStore() throws Exception {
+        ResponseEntity<List<CustomerDTO>> response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(GET)
-                        .endpoint("/customer/1")
+                        .endpoint("/customer")
                         .execute(
-                                new ParameterizedTypeReference<CustomerDTO>() {});
+                                new ParameterizedTypeReference<List<CustomerDTO>>() {});
 
         assertEquals(OK, response.getStatusCode());
-        assertEquals(CustomerMockFactory.mockFirstCustomer(), response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(CustomerMockFactory.mockFirstCustomer(), response.getBody().get(0));
+        assertEquals(CustomerMockFactory.mockFirstCustomer().store, response.getBody().get(0).store);
     }
 
     @Test

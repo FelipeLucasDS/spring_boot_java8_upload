@@ -2,6 +2,7 @@ package com.felipelucas.test.mock;
 
 import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.customer.domain.Customer;
+import com.felipelucas.store.api.dto.StoreDTO;
 
 public class CustomerMockFactory {
 
@@ -12,6 +13,7 @@ public class CustomerMockFactory {
         customerDTO.state = "SP";
         customerDTO.latitude = "-23.5647971541";
         customerDTO.longitude = "-46.6853087445";
+        customerDTO.store = StoreMockFactory.mockNear();
         return customerDTO;
     }
 
@@ -22,6 +24,7 @@ public class CustomerMockFactory {
         customerDTO.state = "SP";
         customerDTO.latitude = "-23.5582045967";
         customerDTO.longitude = "-46.6388638235";
+        customerDTO.store = StoreMockFactory.mockNear();
         return customerDTO;
     }
 

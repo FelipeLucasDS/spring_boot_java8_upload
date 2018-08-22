@@ -1,7 +1,10 @@
 package com.felipelucas.test.upload;
 
+import com.felipelucas.customer.api.dto.CustomerDTO;
+import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.test.commons.IntegrationTestBase;
 import com.felipelucas.test.commons.RestRequest;
+import com.felipelucas.test.mock.CustomerMockFactory;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -41,6 +45,18 @@ public class CustomerAPITest extends IntegrationTestBase {
                         .execute(new ParameterizedTypeReference<List>() {}, customersCSV.getFile());
 
         assertEquals(OK, response.getStatusCode());
+
+        ResponseEntity<List<CustomerDTO>> responseGET =
+                RestRequest.build()
+                        .baseUrl(getBaseUrl())
+                        .method(GET)
+                        .endpoint("/customer")
+                        .execute(new ParameterizedTypeReference<List<CustomerDTO>>() {});
+
+        assertEquals(OK, responseGET.getStatusCode());
+        assertEquals(100, responseGET.getBody().size());
+        assertEquals(CustomerMockFactory.mockFirstCustomer(), responseGET.getBody().get(0));
+
     }
 
     @Test

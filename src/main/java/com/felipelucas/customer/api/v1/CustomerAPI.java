@@ -4,6 +4,7 @@ import com.felipelucas.commons.api.BaseRestController;
 import com.felipelucas.commons.dto.ValueDTO;
 import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.customer.service.CustomerService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,12 @@ public class CustomerAPI extends BaseRestController {
 
     @Autowired
     private CustomerService customerService;
+
+    @GetMapping(value="/customer")
+    public ResponseEntity<List<CustomerDTO>> getCustomers() {
+        return ok(customerService.getAll());
+    }
+
 
     @GetMapping(value="/customer/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable(value = "id") Long id) {

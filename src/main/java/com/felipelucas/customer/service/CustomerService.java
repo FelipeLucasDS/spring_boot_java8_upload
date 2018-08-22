@@ -51,6 +51,7 @@ public class CustomerService {
 
         customer = repository.save(customer);
 
+        fillCustomerWithNearbyStore(customer);
 
         logger.info("Customer {} created", customer.getId());
         return customer.getId();
@@ -73,6 +74,13 @@ public class CustomerService {
         StoreDTO nearbyStore = this.storeService.getNearbyStore(customer.getLatitude(), customer.getLongitude());
         if(Objects.nonNull(nearbyStore))
             customer.setStore(storeParser.toEntity(nearbyStore));
+    }
+
+    @Transactional(readOnly = true)
+    public List<CustomerDTO> getAll() {
+        return repository.findAll().stream()
+                .map(parser::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -111,7 +119,7 @@ public class CustomerService {
 
         fillCustomerWithNearbyStore(customer);
 
-        logger.info("Store {} updated", customer.getId());
+        logger.info("customer {} updated", customer.getId());
         return customer.getId();
     }
 }

@@ -28,4 +28,15 @@ public class StoreMockFactory {
         return storeDTO;
     }
 
+    public static StoreDTO mockNear(){
+        StoreDTO storeDTO = new StoreDTO();
+        storeDTO.name = "Alameda Santos";
+        storeDTO.city = "São Paulo";
+        storeDTO.state = "SP";
+        storeDTO.latitude = "-23.568767";
+        storeDTO.longitude = "-46.649907";
+        storeDTO.revenue = new BigDecimal(29854.12);
+        return storeDTO;
+    }
+
 }

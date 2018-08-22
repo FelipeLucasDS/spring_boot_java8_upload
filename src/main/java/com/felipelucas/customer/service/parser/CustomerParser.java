@@ -3,18 +3,25 @@ package com.felipelucas.customer.service.parser;
 import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.customer.domain.Customer;
+import com.felipelucas.store.api.dto.StoreDTO;
+import com.felipelucas.store.domain.Store;
+import com.felipelucas.store.service.parser.StoreParser;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerParser {
 
     private Logger logger = LoggerFactory.getLogger(CustomerParser.class);
+
+    @Autowired
+    private StoreParser storeParser;
 
     public List<Customer> toEntity(CSVDTO csv) {
 
@@ -75,6 +82,7 @@ public class CustomerParser {
                 .setLongitude(customer.getLongitude())
                 .setName(customer.getName())
                 .setState(customer.getState())
+                .setStore(storeParser.fromEntity(customer.getStore()))
                 .getitem();
     }
 
@@ -156,6 +164,11 @@ public class CustomerParser {
 
         CustomerDTOBuilder setLongitude(String longitude) {
             customerDTO.longitude = longitude;
+            return this;
+        }
+
+        CustomerDTOBuilder setStore(StoreDTO store) {
+            customerDTO.store = store;
             return this;
         }
 

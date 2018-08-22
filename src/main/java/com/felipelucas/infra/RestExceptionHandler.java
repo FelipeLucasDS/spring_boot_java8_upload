@@ -3,6 +3,7 @@ package com.felipelucas.infra;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.exceptions.NotCSVException;
+import javax.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
     }
 
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
+        ex.printStackTrace();
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<String> handleException(Exception ex) {
+        ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

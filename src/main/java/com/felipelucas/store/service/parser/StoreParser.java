@@ -18,6 +18,9 @@ public class StoreParser {
     private Logger logger = LoggerFactory.getLogger(StoreParser.class);
 
     public StoreDTO fromEntity(Store store) {
+        if(Objects.isNull(store))
+            return null;
+
         return new StoreDTOBuilder()
                 .setId(store.getId())
                 .setName(store.getName())
