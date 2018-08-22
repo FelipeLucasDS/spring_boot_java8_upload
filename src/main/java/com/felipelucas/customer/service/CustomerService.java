@@ -1,9 +1,9 @@
 package com.felipelucas.customer.service;
 
+import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.commons.dto.ValueDTO;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
-import com.felipelucas.commons.csv.CSVDTO;
 import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.customer.domain.Customer;
 import com.felipelucas.customer.repository.CustomerRepository;
@@ -13,7 +13,9 @@ import com.felipelucas.store.service.StoreService;
 import com.felipelucas.store.service.parser.StoreParser;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,7 @@ public class CustomerService {
         CSVDTO csvData = storeCSVProcessor.getCSVData(multipart);
         List<Customer> customers = parser.toEntity(csvData);
 
-        customers.parallelStream().forEach(this::fillCustomerWithNearbyStore);
+//        customers.parallelStream().forEach(this::fillCustomerWithNearbyStore);
 
         repository.save(customers);
     }
@@ -79,13 +81,26 @@ public class CustomerService {
         return this.parser.toDTO(customer);
     }
 
+    @Transactional(readOnly = true)
+    public ValueDTO<BigDecimal> getQtdTotalCustomers(Long storeID) {
+        ValueDTO valueDTO = new ValueDTO<BigDecimal>();
+        valueDTO.value = repository.countCustomersPerStore(storeID);
+        return valueDTO;
+    }
 
     @Transactional(readOnly = true)
-    public ValueDTO getTotalRevenue() {
+    public ValueDTO<BigDecimal> getQtdTotalCustomers() {
         ValueDTO valueDTO = new ValueDTO<BigDecimal>();
         valueDTO.value = repository.countCustomers();
         return valueDTO;
     }
+
+    @Transactional(readOnly = true)
+    public Map<Long, BigDecimal> customersPerStore() {
+        return repository.countCustomersPerStore().stream()
+                .collect(Collectors.toMap(o->o.storeID, o -> o.count));
+    }
+
 
     @Transactional
     public Long updateCustomer(Long id, CustomerDTO customerDTO) {

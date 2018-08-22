@@ -3,12 +3,15 @@ package com.felipelucas.store.service;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
+import com.felipelucas.customer.service.CustomerService;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.domain.Store;
 import com.felipelucas.store.repository.StoreRepository;
 import com.felipelucas.store.service.parser.StoreParser;
 import com.felipelucas.store.service.validator.StoreValidator;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -35,19 +38,31 @@ public class StoreService {
     @Autowired
     private StoreRepository repository;
 
+    @Autowired
+    private CustomerService customerService;
+
     @Transactional(readOnly = true)
     public List<StoreDTO> getAll() {
         logger.info("Searching all stores");
+        List<Store> all = repository.findAll();
 
-        List<Store> all = null;
-        try {
-            all = repository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return all.stream()
+        logger.info("Found {} stores", all.size());
+
+        List<StoreDTO> stores = all.stream()
                 .map(parser::fromEntity)
                 .collect(Collectors.toList());
+
+        Map<Long, BigDecimal> mapStorePerCustomers = customerService.customersPerStore();
+
+        stores.forEach(storeDTO -> {
+            BigDecimal customers = mapStorePerCustomers.get(storeDTO.id);
+            storeDTO.mediumConsumption =
+                    this.getBigDecimalDivision(
+                            customers,
+                            storeDTO.revenue);
+        });
+
+        return stores;
     }
 
 
@@ -56,7 +71,14 @@ public class StoreService {
         logger.info("Searching store {}", id);
 
         Store store = repository.findOne(id);
-        return parser.fromEntity(store);
+
+        StoreDTO storeDTO = parser.fromEntity(store);
+        BigDecimal qtdCustomers = customerService.getQtdTotalCustomers(store.getId()).value;
+        BigDecimal revenue = storeDTO.revenue;
+
+        storeDTO.mediumConsumption = getBigDecimalDivision(qtdCustomers, revenue);
+
+        return storeDTO;
     }
 
     @Transactional
@@ -106,4 +128,16 @@ public class StoreService {
         }
         return parser.fromEntity(store);
     }
+
+    private BigDecimal getBigDecimalDivision(BigDecimal qtdCustomers, BigDecimal revenue) {
+        if(Objects.nonNull(qtdCustomers)
+                && Objects.nonNull(revenue)
+                && BigDecimal.ZERO.compareTo(qtdCustomers) != 0
+                && BigDecimal.ZERO.compareTo(revenue) != 0) {
+            return revenue.divide(qtdCustomers);
+        }else{
+            return  BigDecimal.ZERO;
+        }
+    }
+
 }

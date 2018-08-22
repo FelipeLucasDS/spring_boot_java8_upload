@@ -38,7 +38,7 @@ public class StoreDTO {
 
     @Override
     public String toString() {
-        return "StoreDTO{" +
+        return "CustomerStoreDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
