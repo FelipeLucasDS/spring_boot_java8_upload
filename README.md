@@ -5,8 +5,8 @@
 - [Install](http://www.oracle.com/technetwork/java/javase/downloads/index.html) Java
 - [Install](https://docs.docker.com/engine/installation/) Docker
 
-## Running application without docker and mocking environment
-- bin/run.sh
+## Running application
+- ./bin/run.sh
 
 ## Supported Versions
 We recommend that you use:
