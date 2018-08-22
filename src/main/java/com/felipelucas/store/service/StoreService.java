@@ -10,6 +10,7 @@ import com.felipelucas.store.repository.StoreRepository;
 import com.felipelucas.store.service.parser.StoreParser;
 import com.felipelucas.store.service.validator.StoreValidator;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -120,13 +122,17 @@ public class StoreService {
     @Transactional(readOnly = true)
     public StoreDTO getNearbyStore(String lat, String lon) {
         logger.info("Searching store by lat {} and long {}", lat, lon);
-
-        //TODO do a search for nearby store
-        Store store = repository.findOne(1l);
-        if(Objects.isNull(store)){
+        List<Store> nearbyStore = null;
+        try {
+            nearbyStore = repository.getNearbyStore(Double.valueOf(lat), Double.valueOf(lon));
+        }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
-        return parser.fromEntity(store);
+        if(CollectionUtils.isEmpty(nearbyStore)){
+            return null;
+        }
+        return parser.fromEntity(nearbyStore.get(0));
     }
 
     private BigDecimal getBigDecimalDivision(BigDecimal qtdCustomers, BigDecimal revenue) {
@@ -134,7 +140,7 @@ public class StoreService {
                 && Objects.nonNull(revenue)
                 && BigDecimal.ZERO.compareTo(qtdCustomers) != 0
                 && BigDecimal.ZERO.compareTo(revenue) != 0) {
-            return revenue.divide(qtdCustomers);
+            return revenue.divide(qtdCustomers, MathContext.DECIMAL128);
         }else{
             return  BigDecimal.ZERO;
         }

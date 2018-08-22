@@ -37,10 +37,10 @@ public class StoreParser {
             store.setCity(storeDTO.city);
 
         if(StringUtils.isNotEmpty(storeDTO.latitude))
-            store.setLatitude(storeDTO.latitude);
+            store.setLatitude(Double.valueOf(storeDTO.latitude));
 
         if(StringUtils.isNotEmpty(storeDTO.longitude))
-            store.setLongitude(storeDTO.longitude);
+            store.setLongitude(Double.valueOf(storeDTO.longitude));
 
         if(StringUtils.isNotEmpty(storeDTO.name))
             store.setName(storeDTO.name);
@@ -113,12 +113,12 @@ public class StoreParser {
         }
 
         StoreBuilder setLatitude(String latitude) {
-            store.setLatitude(latitude);
+            store.setLatitude(Double.valueOf(latitude));
             return this;
         }
 
         StoreBuilder setLongitude(String longitude) {
-            store.setLongitude(longitude);
+            store.setLongitude(Double.valueOf(longitude));
             return this;
         }
 
@@ -165,13 +165,13 @@ public class StoreParser {
             return this;
         }
 
-        StoreDTOBuilder setLatitude(String latitude) {
-            store.latitude = latitude;
+        StoreDTOBuilder setLatitude(Double latitude) {
+            store.latitude = latitude.toString();
             return this;
         }
 
-        StoreDTOBuilder setLongitude(String longitude) {
-            store.longitude = longitude;
+        StoreDTOBuilder setLongitude(Double longitude) {
+            store.longitude = longitude.toString();
             return this;
         }
 

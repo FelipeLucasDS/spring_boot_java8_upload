@@ -64,7 +64,7 @@ public class CustomerService {
         CSVDTO csvData = storeCSVProcessor.getCSVData(multipart);
         List<Customer> customers = parser.toEntity(csvData);
 
-//        customers.parallelStream().forEach(this::fillCustomerWithNearbyStore);
+        customers.parallelStream().forEach(this::fillCustomerWithNearbyStore);
 
         repository.save(customers);
     }
