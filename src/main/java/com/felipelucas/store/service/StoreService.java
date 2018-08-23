@@ -1,5 +1,6 @@
 package com.felipelucas.store.service;
 
+import com.felipelucas.commons.dto.ValueDTO;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.csv.CSVDTO;
@@ -144,6 +145,21 @@ public class StoreService {
         }else{
             return  BigDecimal.ZERO;
         }
+    }
+
+    public ValueDTO<BigDecimal> getTotalRevenue(){
+        BigDecimal sumRevenue = repository.sumRevenue();
+        ValueDTO rev = new ValueDTO<BigDecimal>();
+        rev.value = sumRevenue;
+        return rev;
+    }
+
+
+    public ValueDTO<BigDecimal> getMediumRevenue(){
+        BigDecimal sumRevenue = repository.sumRevenue();
+        ValueDTO<BigDecimal> qtdTotalCustomers = customerService.getQtdTotalCustomers();
+        qtdTotalCustomers.value = this.getBigDecimalDivision(qtdTotalCustomers.value, sumRevenue);
+        return qtdTotalCustomers;
     }
 
 }

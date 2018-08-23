@@ -36,7 +36,7 @@ public class StoreMockFactory {
         storeDTO.latitude = "-23.568767";
         storeDTO.longitude = "-46.649907";
         storeDTO.revenue = new BigDecimal(10000);
-        storeDTO.mediumConsumption = new BigDecimal(50);
+        storeDTO.mediumConsumption = new BigDecimal(100);
         return storeDTO;
     }
 

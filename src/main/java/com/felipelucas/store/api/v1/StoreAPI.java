@@ -1,10 +1,13 @@
 package com.felipelucas.store.api.v1;
 
 import com.felipelucas.commons.api.BaseRestController;
+import com.felipelucas.commons.dto.ValueDTO;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.store.service.StoreService;
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,5 +54,15 @@ public class StoreAPI extends BaseRestController{
     public ResponseEntity receiveFile(@RequestParam("file") MultipartFile file) {
         storeService.createFromFile(file);
         return ok().build();
+    }
+
+    @GetMapping(value="/store/totalRevenue")
+    public ResponseEntity<ValueDTO> sumRevenue() {
+        return ok(storeService.getTotalRevenue());
+    }
+
+    @GetMapping(value="/store/mediumRevenue")
+    public ResponseEntity<ValueDTO> mediumRevenue() {
+        return ok(storeService.getMediumRevenue());
     }
 }

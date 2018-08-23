@@ -57,7 +57,7 @@ public class CustomerAPI extends BaseRestController {
         return ok().build();
     }
 
-    @GetMapping(value="/customer/totalRevenue")
+    @GetMapping(value="/customer/countCustomers")
     public ValueDTO getTotalRevenue() {
         return customerService.getQtdTotalCustomers();
     }

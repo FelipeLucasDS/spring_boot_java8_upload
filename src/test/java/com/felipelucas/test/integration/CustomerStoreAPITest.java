@@ -33,12 +33,14 @@ public class CustomerStoreAPITest extends IntegrationTestBase {
     @Value(value = "classpath:csv/stores_far_near.csv")
     private Resource storeFarAndNear;
 
-    private boolean started = false;
+    private static boolean started = false;
 
     @Before
     public void getImportCustomerAndStore() throws Exception {
         if(started)
             return;
+
+        started=true;
         ResponseEntity response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
@@ -70,22 +72,53 @@ public class CustomerStoreAPITest extends IntegrationTestBase {
         List<StoreDTO> storeDTOList = response.getBody();
         assertFalse(storeDTOList.isEmpty());
         assertEquals(StoreMockFactory.mockNear(), storeDTOList.get(0));
-        assertTrue(StoreMockFactory.mockNear().mediumConsumption.compareTo(storeDTOList.get(0).mediumConsumption) == 0);
+        assertTrue(StoreMockFactory.mockNear().mediumConsumption
+                .compareTo(storeDTOList.get(0).mediumConsumption) == 0);
     }
 
     @Test
-    public void getTotalRevenue() throws Exception {
+    public void countTotalCustomers() throws Exception {
         ResponseEntity<ValueDTO> response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(GET)
-                        .endpoint("/customer/totalRevenue")
+                        .endpoint("/customer/countCustomers")
                         .execute(
                                 new ParameterizedTypeReference<ValueDTO>() {});
 
         assertEquals(OK, response.getStatusCode());
         Integer value = (Integer) response.getBody().value;
         assertTrue(value.compareTo(100)==0);
+    }
+
+    @Test
+    public void getTotalRevenue() throws Exception {
+        ResponseEntity<ValueDTO<BigDecimal>> response =
+                RestRequest.build()
+                        .baseUrl(getBaseUrl())
+                        .method(GET)
+                        .endpoint("/store/totalRevenue")
+                        .execute(
+                                new ParameterizedTypeReference<ValueDTO<BigDecimal>>() {});
+
+        assertEquals(OK, response.getStatusCode());
+        BigDecimal value = response.getBody().value;
+        assertTrue(value.compareTo(new BigDecimal(20000))==0);
+    }
+
+    @Test
+    public void getMediumRevenue() throws Exception {
+        ResponseEntity<ValueDTO<BigDecimal>> response =
+                RestRequest.build()
+                        .baseUrl(getBaseUrl())
+                        .method(GET)
+                        .endpoint("/store/mediumRevenue")
+                        .execute(
+                                new ParameterizedTypeReference<ValueDTO<BigDecimal>>() {});
+
+        assertEquals(OK, response.getStatusCode());
+        BigDecimal value = response.getBody().value;
+        assertTrue(value.compareTo(new BigDecimal(200))==0);
     }
 
 
