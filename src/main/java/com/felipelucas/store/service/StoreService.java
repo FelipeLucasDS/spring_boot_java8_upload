@@ -122,14 +122,8 @@ public class StoreService {
 
     @Transactional(readOnly = true)
     public StoreDTO getNearbyStore(String lat, String lon) {
-        logger.info("Searching store by lat {} and long {}", lat, lon);
-        List<Store> nearbyStore = null;
-        try {
-            nearbyStore = repository.getNearbyStore(Double.valueOf(lat), Double.valueOf(lon));
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        logger.info("Se'arching store by lat {} and long {}", lat, lon);
+        List<Store> nearbyStore = repository.getNearbyStore(Double.valueOf(lat), Double.valueOf(lon));
         if(CollectionUtils.isEmpty(nearbyStore)){
             return null;
         }

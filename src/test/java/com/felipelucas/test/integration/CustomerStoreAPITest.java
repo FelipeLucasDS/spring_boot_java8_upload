@@ -1,7 +1,6 @@
 package com.felipelucas.test.integration;
 
 import com.felipelucas.commons.dto.ValueDTO;
-import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.store.api.dto.StoreDTO;
 import com.felipelucas.test.commons.IntegrationTestBase;
 import com.felipelucas.test.commons.RestRequest;
@@ -10,7 +9,6 @@ import com.felipelucas.test.mock.StoreMockFactory;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -22,7 +20,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpStatus.OK;
 
 public class CustomerStoreAPITest extends IntegrationTestBase {

@@ -1,10 +1,9 @@
-package com.felipelucas.test.upload;
+package com.felipelucas.test.integration.upload;
 
-import com.felipelucas.store.api.dto.StoreDTO;
+import com.felipelucas.customer.api.dto.CustomerDTO;
 import com.felipelucas.test.commons.IntegrationTestBase;
 import com.felipelucas.test.commons.RestRequest;
 import com.felipelucas.test.mock.CustomerMockFactory;
-import com.felipelucas.test.mock.StoreMockFactory;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 
-public class StoreAPITest extends IntegrationTestBase {
+public class CustomerAPITest extends IntegrationTestBase {
 
     @Value(value = "classpath:csv/stores_empty.csv")
     private Resource storesCSVEmpty;
@@ -35,37 +34,38 @@ public class StoreAPITest extends IntegrationTestBase {
     private Resource otherFile;
 
     @Test
-    public void getImportStoreOK() throws Exception {
+    public void getImportCustomerOK() throws Exception {
 
         ResponseEntity response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(POST)
-                        .endpoint("/store/import")
-                        .execute(new ParameterizedTypeReference<List>() {}, storesCSV.getFile());
+                        .endpoint("/customer/import")
+                        .execute(new ParameterizedTypeReference<List>() {}, customersCSV.getFile());
 
         assertEquals(OK, response.getStatusCode());
 
-        ResponseEntity<List<StoreDTO>> responseGET =
+        ResponseEntity<List<CustomerDTO>> responseGET =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(GET)
-                        .endpoint("/store")
-                        .execute(new ParameterizedTypeReference<List<StoreDTO>>() {});
+                        .endpoint("/customer")
+                        .execute(new ParameterizedTypeReference<List<CustomerDTO>>() {});
 
         assertEquals(OK, responseGET.getStatusCode());
-        assertEquals(50, responseGET.getBody().size());
-        assertEquals(StoreMockFactory.mockFirst(), responseGET.getBody().get(0));
+        assertEquals(100, responseGET.getBody().size());
+        assertEquals(CustomerMockFactory.mockFirstCustomer(), responseGET.getBody().get(0));
+
     }
 
     @Test
-    public void getImportStoreEmptyNOK() throws Exception {
+    public void getImportCustomerEmptyNOK() throws Exception {
 
         ResponseEntity response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(POST)
-                        .endpoint("/store/import")
+                        .endpoint("/customer/import")
                         .execute(new ParameterizedTypeReference<List>() {}, storesCSVEmpty.getFile());
 
 
@@ -79,7 +79,7 @@ public class StoreAPITest extends IntegrationTestBase {
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(POST)
-                        .endpoint("/store/import")
+                        .endpoint("/customer/import")
                         .execute(new ParameterizedTypeReference<List>() {}, otherFile.getFile());
 
         assertEquals(UNSUPPORTED_MEDIA_TYPE, response.getStatusCode());
@@ -87,14 +87,14 @@ public class StoreAPITest extends IntegrationTestBase {
 
 
     @Test
-    public void getImportCustomerFileNOK() throws Exception {
+    public void getImportStoreFileNOK() throws Exception {
 
         ResponseEntity response =
                 RestRequest.build()
                         .baseUrl(getBaseUrl())
                         .method(POST)
-                        .endpoint("/store/import")
-                        .execute(new ParameterizedTypeReference<List>() {}, customersCSV.getFile());
+                        .endpoint("/customer/import")
+                        .execute(new ParameterizedTypeReference<List>() {}, storesCSV.getFile());
 
         assertEquals(PRECONDITION_FAILED, response.getStatusCode());
     }

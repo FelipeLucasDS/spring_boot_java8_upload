@@ -1,5 +1,6 @@
 package com.felipelucas.infra;
 
+import com.felipelucas.commons.exceptions.BusinessException;
 import com.felipelucas.commons.exceptions.CSVEmptyException;
 import com.felipelucas.commons.exceptions.CSVException;
 import com.felipelucas.commons.exceptions.NotCSVException;
@@ -30,6 +31,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({CSVException.class})
     public ResponseEntity<String> handleCSVException(CSVException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @ExceptionHandler({BusinessException.class})
+    public ResponseEntity<String> handleBusinessException(BusinessException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({EntityNotFoundException.class})

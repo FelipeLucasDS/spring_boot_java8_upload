@@ -1,8 +1,6 @@
 package com.felipelucas.test.mock;
 
 import com.felipelucas.customer.api.dto.CustomerDTO;
-import com.felipelucas.customer.domain.Customer;
-import com.felipelucas.store.api.dto.StoreDTO;
 
 public class CustomerMockFactory {
 
